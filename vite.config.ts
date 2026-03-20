@@ -1,24 +1,15 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig, loadEnv} from 'vite';
+import { defineConfig } from 'vite';
 
-export default defineConfig(({mode}) => {
-  const env = loadEnv(mode, '.', '');
-  const repositoryName =
-    process.env.GITHUB_REPOSITORY?.split('/')[1] ??
-    env.VITE_GITHUB_PAGES_REPO ??
-    'HIDROKOP---HP-Auto';
-  const pagesBase =
-    mode === 'production' ? `/${repositoryName}/` : '/';
+export default defineConfig(({ mode }) => {
+  const base = mode === 'production' ? './' : '/';
 
   return {
-    base: pagesBase,
+    base,
     publicDir: 'public',
     plugins: [react(), tailwindcss()],
-    define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
