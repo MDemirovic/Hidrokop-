@@ -89,7 +89,7 @@ export default function Navbar() {
                       key={link.name}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="border-b border-zinc-800/70 py-4 text-lg font-semibold text-zinc-100 transition-colors hover:text-red-400"
+                      className="block w-full border-b border-zinc-800/70 py-4 text-lg font-semibold text-zinc-100 transition-colors hover:text-red-400"
                     >
                       {link.name}
                     </a>
