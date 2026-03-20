@@ -4,7 +4,7 @@ import { asset } from '../utils/asset';
 
 export default function Hero() {
   return (
-    <section id="pocetna" className="relative w-full overflow-hidden pb-8 pt-32 md:flex md:h-screen md:items-center md:py-0">
+    <section id="pocetna" className="relative w-full overflow-hidden pb-8 pt-40 md:flex md:h-screen md:items-center md:py-0">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img

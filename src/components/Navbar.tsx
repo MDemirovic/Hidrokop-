@@ -28,14 +28,14 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-0 z-50 bg-transparent py-7 lg:absolute lg:py-8">
+      <header className="absolute left-0 right-0 top-0 z-50 bg-transparent py-5 lg:py-8">
         <div className="container relative z-10 mx-auto flex items-center justify-between px-6 lg:px-8">
           <a href="#pocetna" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
             <div className="w-[76px] overflow-hidden md:w-auto">
               <img
                 src={asset('logo.png')}
                 alt="Hidrokop-HP Auto Logo"
-                className="h-[4.5rem] w-auto max-w-none drop-shadow-2xl md:h-24"
+                className="h-16 w-auto max-w-none drop-shadow-2xl md:h-24"
               />
             </div>
           </a>
@@ -69,20 +69,34 @@ export default function Navbar() {
         {isMobileMenuOpen ? (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
-              initial={{ opacity: 0, y: -24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -24 }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
-              className="fixed inset-x-0 top-0 z-[70] border-b border-zinc-800 bg-zinc-950/98 pt-28 shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:hidden"
+              className="fixed inset-x-0 top-0 z-[70] border-b border-zinc-800 bg-zinc-950/98 pt-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:hidden"
             >
               <div className="container mx-auto flex min-h-[100dvh] flex-col px-6 pb-8">
+                <div className="mb-6 flex items-center justify-between border-b border-zinc-800/70 pb-5">
+                  <a href="#pocetna" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                    <div className="w-[76px] overflow-hidden">
+                      <img
+                        src={asset('logo.png')}
+                        alt="Hidrokop-HP Auto Logo"
+                        className="h-16 w-auto max-w-none drop-shadow-2xl"
+                      />
+                    </div>
+                  </a>
+
+                  <button
+                    type="button"
+                    aria-label="Zatvori izbornik"
+                    className="text-zinc-300 transition-colors hover:text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <X className="h-7 w-7" />
+                  </button>
+                </div>
+
                 <nav className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <a
