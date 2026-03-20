@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HP Auto favicon">
+  <defs>
+    <linearGradient id="shieldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4f4f5" />
+      <stop offset="45%" stop-color="#9f9fa9" />
+      <stop offset="100%" stop-color="#ef4444" />
+    </linearGradient>
+    <linearGradient id="letterFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#d4d4d8" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#050507" />
+  <path
+    d="M32 6 51 13v14c0 12.5-7.4 22.6-19 30C20.4 49.6 13 39.5 13 27V13L32 6Z"
+    fill="#09090b"
+    stroke="url(#shieldStroke)"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M32 11 46 16.2v11.4c0 9.7-5.5 17.7-14 23.5-8.5-5.8-14-13.8-14-23.5V16.2L32 11Z"
+    fill="none"
+    stroke="#ef4444"
+    stroke-width="1.8"
+    stroke-linejoin="round"
+    opacity="0.9"
+  />
+  <text
+    x="32"
+    y="39"
+    text-anchor="middle"
+    font-size="22"
+    font-weight="800"
+    font-family="Georgia, 'Times New Roman', serif"
+    fill="url(#letterFill)"
+    letter-spacing="-1.5"
+  >
+    HP
+  </text>
+</svg>
