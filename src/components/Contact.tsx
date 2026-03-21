@@ -101,10 +101,14 @@ export default function Contact() {
           <div className="flex flex-col gap-4 md:items-start">
             <span>Hidrokop-HP Auto, Rijeka</span>
             <p className="normal-case tracking-normal text-white/46">
-              &copy; {new Date().getFullYear()} Hidrokop-HP Auto. Sva prava zadržana. Dizajn i izrada:{' '}
-              <a href="mailto:demirovicmarko10@gmail.com" className="transition-colors hover:text-white/70">
-                MDemirovic
-              </a>
+              <span>&copy; {new Date().getFullYear()} Hidrokop-HP Auto. Sva prava zadržana.</span>
+              <span className="block md:inline">
+                {' '}
+                Dizajn i izrada:{' '}
+                <a href="mailto:demirovicmarko10@gmail.com" className="transition-colors hover:text-white/70">
+                  MDemirovic
+                </a>
+              </span>
             </p>
           </div>
 

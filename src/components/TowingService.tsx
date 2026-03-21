@@ -20,6 +20,7 @@ export default function TowingService() {
   return (
     <section id="vucna-sluzba" className="relative overflow-hidden bg-zinc-950 pb-20 pt-6 md:pb-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,#000000_0%,#000000_28%,rgba(0,0,0,0.82)_56%,rgba(0,0,0,0.34)_82%,rgba(0,0,0,0)_100%)] md:hidden" />
         <div className="absolute top-[-8rem] right-[-8rem] h-[20rem] w-[20rem] rounded-full bg-red-900/10 blur-3xl" />
         <div className="absolute right-[-6rem] top-32 h-[22rem] w-[22rem] rounded-full bg-red-950/14 blur-3xl" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-zinc-950" />
@@ -69,7 +70,7 @@ export default function TowingService() {
                 </div>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-zinc-400">
-                Klik na cijelu karticu odmah otvara poziv s ovim brojem.
+                Nazovite za brzu pomoć na cesti i dogovor vučne službe.
               </p>
             </a>
           ))}
