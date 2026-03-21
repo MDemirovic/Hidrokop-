@@ -16,9 +16,9 @@ import { asset } from '../utils/asset';
 const services = [
   { icon: ShoppingBag, title: 'Trgovina', image: asset('trgovina1.png') },
   { icon: Wrench, title: 'Autoservis', image: asset('autoservis.jpg') },
+  { icon: Truck, title: 'Vučna služba', image: asset('4.jpg') },
   { icon: Search, title: 'Optika trapa', image: asset('HPUlaz.png') },
   { icon: Circle, title: 'Vulkanizerske usluge', image: asset('1.jpg') },
-  { icon: Truck, title: 'Vučna služba', image: asset('4.jpg') },
   { icon: Wind, title: 'Punjenje i održavanje klime', image: asset('3.jpg') },
 ];
 
