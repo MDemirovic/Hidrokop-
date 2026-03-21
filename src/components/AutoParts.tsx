@@ -15,7 +15,7 @@ export default function AutoParts() {
 
       <div className="relative mx-auto max-w-[1320px] px-6 lg:pr-[50vw] xl:pr-[48vw]">
         <div data-gsap="reveal" data-y="20" className="mb-10 flex max-w-[560px] flex-col gap-1 md:mb-14">
-          <h2 className="font-serif text-5xl leading-[0.92] font-semibold tracking-[0.03em] text-zinc-100 sm:text-6xl md:text-7xl lg:text-8xl">
+          <h2 className="font-serif text-5xl font-semibold leading-[0.92] tracking-[0.03em] text-zinc-100 sm:text-6xl md:text-7xl lg:text-8xl">
             Trgovina
           </h2>
           <p className="font-script text-5xl leading-[0.92] text-red-300 sm:text-6xl md:text-7xl lg:text-8xl">
@@ -26,10 +26,11 @@ export default function AutoParts() {
         <div className="grid gap-8">
           <div data-gsap="reveal" data-x="-30" className="relative z-20 max-w-[520px] lg:max-w-[430px] xl:max-w-[490px]">
             <p className="text-base leading-relaxed text-zinc-200 md:text-lg">
-              Originalni i zamjenski dijelovi za većinu marki vozila, uz brz savjet i sigurnu nabavu bez čekanja.
+              Originalni i zamjenski dijelovi za sva vozila, uz brz savjet i sigurnu nabavu bez nepotrebnog čekanja.
             </p>
             <p className="mt-4 max-w-md border-l-2 border-red-500/70 pl-4 text-sm leading-relaxed text-zinc-400 md:text-base">
-              Tražite specifičan dio? Nazovite nas i odmah provjeravamo dostupnost za vaše vozilo.
+              Tražite specifičan dio? Nazovite nas i odmah provjeravamo dostupnost za vaše vozilo i najbolju opciju za
+              ugradnju.
             </p>
 
             <a
@@ -61,7 +62,7 @@ export default function AutoParts() {
       <div
         data-gsap="reveal"
         data-x="60"
-        className="pointer-events-none absolute right-0 bottom-[-2.5rem] hidden w-[68vw] max-w-[1160px] lg:block xl:bottom-[-4rem]"
+        className="pointer-events-none absolute bottom-[-2.5rem] right-0 hidden w-[68vw] max-w-[1160px] lg:block xl:bottom-[-4rem]"
       >
         <img
           src={asset('auto3.png')}
@@ -70,7 +71,7 @@ export default function AutoParts() {
         />
       </div>
 
-      <div className="pointer-events-none absolute right-[5vw] bottom-[20%] hidden max-w-[240px] rounded-xl border border-red-500/30 bg-zinc-950/55 p-4 backdrop-blur-sm min-[1400px]:block">
+      <div className="pointer-events-none absolute bottom-[20%] right-[5vw] hidden max-w-[240px] rounded-xl border border-red-500/30 bg-zinc-950/55 p-4 backdrop-blur-sm min-[1400px]:block">
         <p className="text-xs uppercase tracking-[0.22em] text-red-300">Brza isporuka</p>
         <p className="mt-2 text-sm leading-relaxed text-zinc-200">Većina dijelova dostupna je isti dan ili unutar 24h.</p>
       </div>

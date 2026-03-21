@@ -38,14 +38,11 @@ export default function Location() {
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950/70 shadow-[0_25px_85px_-35px_rgba(0,0,0,0.95)] backdrop-blur-sm">
           <div className="grid lg:grid-cols-[420px_1fr]">
             <div
-              data-gsap="reveal"
-              data-x="-48"
-              data-start="top 82%"
               className="relative z-10 border-b border-white/10 bg-zinc-950/85 p-8 lg:border-b-0 lg:border-r lg:p-12"
             >
               <div aria-hidden className="absolute -right-10 top-12 hidden h-36 w-36 rounded-full bg-red-600/15 blur-2xl lg:block" />
 
-              <div className="relative mb-8 flex items-start gap-4">
+              <div data-gsap="reveal" data-y="20" data-start="top 82%" className="relative mb-8 flex items-start gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-red-500/35 bg-red-500/15">
                   <MapPin className="h-7 w-7 text-red-300" />
                 </div>
@@ -59,7 +56,7 @@ export default function Location() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-black/30 p-5">
+              <div data-gsap="reveal" data-y="20" data-delay="0.04" data-start="top 82%" className="rounded-2xl border border-white/10 bg-black/30 p-5">
                 <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-zinc-300">Radno vrijeme</h4>
                 <ul className="space-y-3">
                   {openingHours.map((item) => (
@@ -74,6 +71,10 @@ export default function Location() {
               </div>
 
               <a
+                data-gsap="reveal"
+                data-y="20"
+                data-delay="0.08"
+                data-start="top 82%"
                 href="https://www.google.com/maps/search/?api=1&query=Hidrokop+-+HP+Auto,+Rijeka"
                 target="_blank"
                 rel="noreferrer"
@@ -84,14 +85,14 @@ export default function Location() {
             </div>
 
             <div
-              data-gsap="reveal"
-              data-x="48"
-              data-delay="0.08"
-              data-scale="0.985"
-              data-start="top 82%"
               className="relative min-h-[420px] overflow-hidden bg-zinc-900"
             >
               <iframe
+                data-gsap="reveal"
+                data-y="20"
+                data-delay="0.08"
+                data-scale="0.985"
+                data-start="top 82%"
                 src={mapUrl}
                 width="100%"
                 height="100%"

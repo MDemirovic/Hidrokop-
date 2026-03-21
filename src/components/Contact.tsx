@@ -1,506 +1,149 @@
-﻿import { useMemo, useState, type FormEvent } from 'react';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { ArrowUpRight, Mail, Phone, Truck } from 'lucide-react';
 
-import SectionHeading from './SectionHeading';
-
-type FormData = {
-  fullName: string;
-  phone: string;
-  carModel: string;
-  service: string;
-  message: string;
-};
-
-type DateParts = {
-  day: string;
-  month: string;
-  year: string;
-};
-
-type FormErrors = Partial<Record<keyof FormData | 'desiredDate', string>>;
-
-const serviceOptions = [
-  { value: '', label: 'Odaberite uslugu' },
-  { value: 'Mali servis', label: 'Mali servis' },
-  { value: 'Veliki servis', label: 'Veliki servis' },
-  { value: 'Dijagnostika', label: 'Dijagnostika' },
-  { value: 'Kočnice', label: 'Kočnice' },
-  { value: 'Klima servis', label: 'Klima servis' },
-  { value: 'Ovjes i trap', label: 'Ovjes i trap' },
-  { value: 'Nešto drugo / Nisam siguran', label: 'Nešto drugo / Nisam siguran' },
+const towingContacts = [
+  { name: 'Leo', phoneDisplay: '091 210 5202', phoneHref: '0912105202' },
+  { name: 'Denis', phoneDisplay: '091 6422 313', phoneHref: '0916422313' },
 ];
-
-const monthOptions = [
-  { value: '01', label: '01 - Siječanj' },
-  { value: '02', label: '02 - Veljača' },
-  { value: '03', label: '03 - Ožujak' },
-  { value: '04', label: '04 - Travanj' },
-  { value: '05', label: '05 - Svibanj' },
-  { value: '06', label: '06 - Lipanj' },
-  { value: '07', label: '07 - Srpanj' },
-  { value: '08', label: '08 - Kolovoz' },
-  { value: '09', label: '09 - Rujan' },
-  { value: '10', label: '10 - Listopad' },
-  { value: '11', label: '11 - Studeni' },
-  { value: '12', label: '12 - Prosinac' },
-];
-
-const pad = (value: number) => value.toString().padStart(2, '0');
-
-const createIsoDate = (date: Date) => {
-  const normalized = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  return normalized.toISOString().slice(0, 10);
-};
-
-const addDays = (date: Date, days: number) => {
-  const next = new Date(date);
-  next.setDate(next.getDate() + days);
-  return next;
-};
-
-const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
-
-const isValidCalendarDate = (day: number, month: number, year: number) => {
-  const test = new Date(year, month - 1, day);
-  return test.getFullYear() === year && test.getMonth() === month - 1 && test.getDate() === day;
-};
-
-const toDateParts = (date: Date): DateParts => ({
-  day: pad(date.getDate()),
-  month: pad(date.getMonth() + 1),
-  year: String(date.getFullYear()),
-});
-
-const formatDisplayDate = ({ day, month, year }: DateParts) => {
-  if (!day || !month || !year) return 'Nije odabran datum';
-  return `${day}/${month}/${year}`;
-};
 
 export default function Contact() {
-  const today = useMemo(() => new Date(), []);
-  const currentYear = today.getFullYear();
-  const maxYear = currentYear + 2;
-  const minDate = useMemo(() => createIsoDate(today), [today]);
-  const maxDate = useMemo(() => {
-    const next = new Date(today);
-    next.setFullYear(next.getFullYear() + 2);
-    return createIsoDate(next);
-  }, [today]);
-
-  const [formData, setFormData] = useState<FormData>({
-    fullName: '',
-    phone: '',
-    carModel: '',
-    service: '',
-    message: '',
-  });
-  const [dateParts, setDateParts] = useState<DateParts>({ day: '', month: '', year: '' });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [submitMessage, setSubmitMessage] = useState('');
-
-  const yearOptions = useMemo(
-    () => Array.from({ length: maxYear - currentYear + 1 }, (_, index) => String(currentYear + index)),
-    [currentYear, maxYear]
-  );
-
-  const dayOptions = useMemo(() => {
-    const fallbackMonth = today.getMonth() + 1;
-    const fallbackYear = today.getFullYear();
-    const month = Number(dateParts.month || fallbackMonth);
-    const year = Number(dateParts.year || fallbackYear);
-    const totalDays = getDaysInMonth(year, month);
-    return Array.from({ length: totalDays }, (_, index) => pad(index + 1));
-  }, [dateParts.month, dateParts.year, today]);
-
-  const inputBaseClass =
-    'w-full rounded-xl border bg-zinc-950 px-4 py-3.5 text-white transition-colors outline-none placeholder:text-zinc-500 focus:border-red-500';
-
-  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
-    setFormData((current) => ({ ...current, [field]: value }));
-    setErrors((current) => ({ ...current, [field]: undefined }));
-    setSubmitMessage('');
-  };
-
-  const updateDatePart = (field: keyof DateParts, value: string) => {
-    setDateParts((current) => {
-      const next = { ...current, [field]: value };
-      const month = Number(next.month || today.getMonth() + 1);
-      const year = Number(next.year || today.getFullYear());
-      const maxDay = getDaysInMonth(year, month);
-
-      if (next.day && Number(next.day) > maxDay) {
-        next.day = pad(maxDay);
-      }
-
-      return next;
-    });
-
-    setErrors((current) => ({ ...current, desiredDate: undefined }));
-    setSubmitMessage('');
-  };
-
-  const applyPresetDate = (date: Date) => {
-    setDateParts(toDateParts(date));
-    setErrors((current) => ({ ...current, desiredDate: undefined }));
-    setSubmitMessage('');
-  };
-
-  const clearDate = () => {
-    setDateParts({ day: '', month: '', year: '' });
-    setErrors((current) => ({ ...current, desiredDate: undefined }));
-    setSubmitMessage('');
-  };
-
-  const validateForm = () => {
-    const nextErrors: FormErrors = {};
-    const digitsOnlyPhone = formData.phone.replace(/\D/g, '');
-    const hasAnyDateValue = Boolean(dateParts.day || dateParts.month || dateParts.year);
-    const hasFullDate = Boolean(dateParts.day && dateParts.month && dateParts.year);
-
-    if (formData.fullName.trim().length < 3) {
-      nextErrors.fullName = 'Unesite ime i prezime.';
-    }
-
-    if (digitsOnlyPhone.length < 8) {
-      nextErrors.phone = 'Unesite ispravan broj telefona.';
-    }
-
-    if (formData.carModel.trim().length < 2) {
-      nextErrors.carModel = 'Upišite marku i model vozila.';
-    }
-
-    if (!formData.service) {
-      nextErrors.service = 'Odaberite vrstu usluge.';
-    }
-
-    if (hasAnyDateValue && !hasFullDate) {
-      nextErrors.desiredDate = 'Odaberite dan, mjesec i godinu.';
-    }
-
-    if (hasFullDate) {
-      const day = Number(dateParts.day);
-      const month = Number(dateParts.month);
-      const year = Number(dateParts.year);
-
-      if (!isValidCalendarDate(day, month, year)) {
-        nextErrors.desiredDate = 'Odabrani datum nije valjan.';
-      } else {
-        const isoDate = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
-        if (isoDate < minDate || isoDate > maxDate) {
-          nextErrors.desiredDate = 'Odaberite datum između danas i 2 godine unaprijed.';
-        }
-      }
-    }
-
-    return nextErrors;
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextErrors = validateForm();
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors);
-      setSubmitMessage('Provjerite označena polja i pokušajte ponovno.');
-      return;
-    }
-
-    const emailBody = [
-      `Ime i prezime: ${formData.fullName}`,
-      `Telefon: ${formData.phone}`,
-      `Marka i model vozila: ${formData.carModel}`,
-      `Vrsta usluge: ${formData.service}`,
-      `Željeni datum: ${
-        dateParts.day && dateParts.month && dateParts.year ? formatDisplayDate(dateParts) : 'Nije naveden'
-      }`,
-      '',
-      'Poruka / opis kvara:',
-      formData.message.trim() || 'Nema dodatne poruke.',
-    ].join('\n');
-
-    const subject = encodeURIComponent(`Upit s web stranice - ${formData.service}`);
-    const body = encodeURIComponent(emailBody);
-
-    setSubmitMessage('Otvara se vaš email s popunjenim podacima.');
-    window.location.href = `mailto:hidrokopdoo@gmail.com?subject=${subject}&body=${body}`;
-  };
+  const privacyUrl = `${import.meta.env.BASE_URL}politika-privatnosti.html`;
+  const termsUrl = `${import.meta.env.BASE_URL}uslovi-koristenja.html`;
 
   return (
-    <section id="kontakt" className="relative bg-zinc-950 py-24">
-      <div className="container mx-auto px-6">
-        <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
-          <SectionHeading
-            align="center"
-            title="Tu smo"
-            subtitle="za vaš auto"
-            inline
-            description="Rezervirajte termin, postavite pitanje ili nas posjetite na našoj lokaciji."
-            className="max-w-[760px]"
-          />
-        </div>
+    <section id="kontakt" className="relative overflow-hidden bg-[#120708] py-24 text-white md:py-32">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#000000_0%,#1a0709_7%,#451116_14%,#742028_28%,#92272d_46%,#92252c_66%,#721b22_84%,#20090c_97%,#09090b_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,#000000_0%,rgba(0,0,0,0.96)_18%,rgba(0,0,0,0.82)_36%,rgba(7,4,5,0.56)_58%,rgba(18,7,8,0.22)_82%,rgba(18,7,8,0)_100%)]" />
+        <div className="absolute inset-x-[10%] top-[14%] h-40 bg-[linear-gradient(90deg,rgba(127,29,29,0),rgba(239,68,68,0.14),rgba(127,29,29,0))] blur-3xl" />
+        <div className="absolute left-[-8rem] top-[16%] h-[24rem] w-[24rem] rounded-full bg-red-950/18 blur-3xl" />
+        <div className="absolute right-[-10rem] top-[13%] h-[26rem] w-[26rem] rounded-full bg-red-900/16 blur-3xl" />
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-[linear-gradient(180deg,rgba(58,16,20,0)_0%,rgba(58,16,20,0.2)_22%,rgba(50,13,17,0.55)_52%,rgba(42,10,13,0.86)_82%,#2a0a0d_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_22%,transparent_78%,rgba(0,0,0,0.2))]" />
+      </div>
 
-        <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row">
-          <div data-gsap="reveal" data-x="-30" className="space-y-8 lg:w-1/3">
-            <div className="h-full space-y-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-white">Telefon</h3>
-                  <a href="tel:051642111" className="text-zinc-400 transition-colors hover:text-red-500">
-                    051 642 111
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-white">Adresa</h3>
-                  <p className="text-zinc-400">
-                    Zametska ulica 28
-                    <br />
-                    51000, Rijeka
-                  </p>
-                  <a
-                    href="https://www.google.com/maps/search/?api=1&query=Hidrokop+-+HP+Auto,+Rijeka"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="mt-2 inline-block text-sm text-red-500 hover:underline"
-                  >
-                    Prikaži na mapi
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
-                  <Clock className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-white">Radno vrijeme</h3>
-                  <p className="text-zinc-400">Pon - Pet: 08:00 - 16:00</p>
-                  <p className="text-zinc-400">Subota: 08:00 - 14:00</p>
-                  <p className="mt-1 text-sm text-zinc-500">Nedjelja: Zatvoreno</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-white">Email</h3>
-                  <a href="mailto:hidrokopdoo@gmail.com" className="text-zinc-400 transition-colors hover:text-red-500">
-                    hidrokopdoo@gmail.com
-                  </a>
-                </div>
-              </div>
-            </div>
+      <div className="container relative mx-auto px-6">
+        <div className="grid gap-16 lg:grid-cols-[1fr_auto] lg:items-start">
+          <div data-gsap="reveal" data-y="18" className="pt-6">
+            <p className="text-sm font-bold uppercase tracking-[0.34em] text-white/88">Kontakt</p>
+            <h2 className="mt-6 max-w-4xl font-serif text-[3.1rem] leading-[0.92] font-semibold tracking-[-0.03em] text-white sm:text-[4.1rem] md:text-[5rem]">
+              Nazovite nas
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/78 md:text-lg">
+              Firma radi isključivo preko telefonskog kontakta. Za servis i trgovinu nazovite glavni broj, a za vučnu
+              službu odaberite Lea ili Denisa.
+            </p>
           </div>
 
-          <div data-gsap="reveal" data-x="30" data-delay="0.04" className="lg:w-2/3">
-            <form className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8" onSubmit={handleSubmit} noValidate>
-              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div
+            data-gsap="reveal"
+            data-delay="0.08"
+            className="hidden pt-8 text-right text-[0.82rem] font-semibold uppercase tracking-[0.9em] text-white/80 md:block"
+          >
+            <div className="grid grid-cols-8 gap-x-5 gap-y-4">
+              {Array.from({ length: 24 }).map((_, index) => (
+                <span key={index} className="h-1.5 w-1.5 rounded-full bg-white/85" />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-20 grid gap-14 lg:grid-cols-2">
+          <div data-gsap="reveal" data-x="-24">
+            <p className="mb-8 text-xs font-semibold uppercase tracking-[0.28em] text-white/75">Opći kontakt</p>
+
+            <a
+              href="tel:051642111"
+              aria-label="Nazovi glavni broj 051 642 111"
+              className="group block border-b border-white/18 py-5 transition-colors hover:border-white/40"
+            >
+              <div className="flex items-end justify-between gap-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-white">Zatraži termin ili ponudu</h3>
+                  <p className="text-[2.2rem] font-medium leading-none tracking-[-0.04em] text-white/92 sm:text-[3rem] md:text-[3.6rem]">
+                    051 642 111
+                  </p>
+                  <p className="mt-4 text-sm uppercase tracking-[0.24em] text-white/64">Autoservis i trgovina</p>
                 </div>
+                <ArrowUpRight className="mb-2 h-8 w-8 shrink-0 text-white/72 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" />
               </div>
+            </a>
+          </div>
 
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label htmlFor="fullName" className="text-sm font-medium text-zinc-400">
-                    Ime i prezime *
-                  </label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    value={formData.fullName}
-                    onChange={(event) => updateField('fullName', event.target.value)}
-                    className={`${inputBaseClass} ${errors.fullName ? 'border-red-500' : 'border-zinc-800'}`}
-                    placeholder="Vaše ime i prezime"
-                    autoComplete="name"
-                  />
-                  {errors.fullName ? <p className="text-xs text-red-500">{errors.fullName}</p> : null}
-                </div>
+          <div data-gsap="reveal" data-x="24">
+            <p className="mb-8 text-xs font-semibold uppercase tracking-[0.28em] text-white/75">Vučna služba</p>
 
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-zinc-400">
-                    Broj telefona *
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(event) => updateField('phone', event.target.value)}
-                    className={`${inputBaseClass} ${errors.phone ? 'border-red-500' : 'border-zinc-800'}`}
-                    placeholder="091 123 4567"
-                    autoComplete="tel"
-                  />
-                  {errors.phone ? <p className="text-xs text-red-500">{errors.phone}</p> : null}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label htmlFor="carModel" className="text-sm font-medium text-zinc-400">
-                    Marka i model vozila *
-                  </label>
-                  <input
-                    type="text"
-                    id="carModel"
-                    value={formData.carModel}
-                    onChange={(event) => updateField('carModel', event.target.value)}
-                    className={`${inputBaseClass} ${errors.carModel ? 'border-red-500' : 'border-zinc-800'}`}
-                    placeholder="Npr. VW Golf 7 1.6 TDI"
-                  />
-                  {errors.carModel ? <p className="text-xs text-red-500">{errors.carModel}</p> : null}
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="service" className="text-sm font-medium text-zinc-400">
-                    Vrsta usluge *
-                  </label>
-                  <select
-                    id="service"
-                    value={formData.service}
-                    onChange={(event) => updateField('service', event.target.value)}
-                    className={`${inputBaseClass} appearance-none ${errors.service ? 'border-red-500' : 'border-zinc-800'}`}
-                  >
-                    {serviceOptions.map((option) => (
-                      <option key={option.label} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.service ? <p className="text-xs text-red-500">{errors.service}</p> : null}
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <label className="text-sm font-medium text-zinc-400">Željeni datum (opcionalno)</label>
-                </div>
-
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <select
-                    value={dateParts.day}
-                    onChange={(event) => updateDatePart('day', event.target.value)}
-                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
-                  >
-                    <option value="">Dan</option>
-                    {dayOptions.map((day) => (
-                      <option key={day} value={day}>
-                        {day}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={dateParts.month}
-                    onChange={(event) => updateDatePart('month', event.target.value)}
-                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
-                  >
-                    <option value="">Mjesec</option>
-                    {monthOptions.map((month) => (
-                      <option key={month.value} value={month.value}>
-                        {month.label}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={dateParts.year}
-                    onChange={(event) => updateDatePart('year', event.target.value)}
-                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
-                  >
-                    <option value="">Godina</option>
-                    {yearOptions.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => applyPresetDate(today)}
-                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
-                  >
-                    Danas
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => applyPresetDate(addDays(today, 1))}
-                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
-                  >
-                    Sutra
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => applyPresetDate(addDays(today, 7))}
-                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
-                  >
-                    Za 7 dana
-                  </button>
-                  {(dateParts.day || dateParts.month || dateParts.year) ? (
-                    <button
-                      type="button"
-                      onClick={clearDate}
-                      className="rounded-full border border-zinc-800 px-3 py-1.5 text-xs text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
-                    >
-                      Očisti datum
-                    </button>
-                  ) : null}
-                </div>
-
-                {dateParts.day && dateParts.month && dateParts.year ? (
-                  <p className="text-sm text-zinc-500">Odabrano: {formatDisplayDate(dateParts)}</p>
-                ) : (
-                  <p className="text-sm text-zinc-500">Datum nije zabilježen.</p>
-                )}
-                {errors.desiredDate ? <p className="text-xs text-red-500">{errors.desiredDate}</p> : null}
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-zinc-400">
-                  Poruka / Opis kvara
-                </label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={(event) => updateField('message', event.target.value)}
-                  className={`${inputBaseClass} resize-none border-zinc-800`}
-                  placeholder="Opišite problem, simptome ili bilo kakvu dodatnu napomenu..."
-                />
-              </div>
-
-              {submitMessage ? (
-                <div
-                  className={`rounded-xl border px-4 py-3 text-sm ${
-                    Object.keys(errors).length
-                      ? 'border-red-500/35 bg-red-500/10 text-red-200'
-                      : 'border-zinc-700 bg-zinc-950 text-zinc-300'
-                  }`}
+            <div className="space-y-2">
+              {towingContacts.map((contact) => (
+                <a
+                  key={contact.name}
+                  href={`tel:${contact.phoneHref}`}
+                  aria-label={`Nazovi ${contact.name} na broj ${contact.phoneDisplay}`}
+                  className="group block border-b border-white/18 py-5 transition-colors hover:border-white/40"
                 >
-                  {submitMessage}
-                </div>
-              ) : null}
+                  <div className="flex items-end justify-between gap-6">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/64">{contact.name}</p>
+                      <p className="mt-3 text-[2rem] font-medium leading-none tracking-[-0.04em] text-white/92 sm:text-[2.6rem] md:text-[3.1rem]">
+                        {contact.phoneDisplay}
+                      </p>
+                    </div>
+                    <div className="mb-2 flex items-center gap-3">
+                      <Truck className="h-5 w-5 text-white/48 transition-colors group-hover:text-white/80" />
+                      <ArrowUpRight className="h-8 w-8 text-white/72 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" />
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
 
-              <button
-                type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-4 font-medium text-white transition-colors hover:bg-red-700"
+        <div className="mt-20 flex flex-col gap-6 border-t border-white/14 pt-6 text-xs font-semibold uppercase tracking-[0.24em] text-white/58 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-4 md:items-start">
+            <span>Hidrokop-HP Auto, Rijeka</span>
+            <p className="normal-case tracking-normal text-white/46">
+              &copy; {new Date().getFullYear()} Hidrokop-HP Auto. Sva prava zadržana. Dizajn i izrada:{' '}
+              <a href="mailto:demirovicmarko10@gmail.com" className="transition-colors hover:text-white/70">
+                MDemirovic
+              </a>
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4 md:items-end">
+            <div className="flex flex-wrap items-center gap-4">
+              <a
+                href={privacyUrl}
+                className="transition-colors hover:text-white/70"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Send className="h-5 w-5" />
-                Pošalji upit
-              </button>
-            </form>
+                Politika privatnosti
+              </a>
+              <a
+                href={termsUrl}
+                className="transition-colors hover:text-white/70"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Uslovi korištenja
+              </a>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <a
+                href="tel:051642111"
+                aria-label="Nazovite nas"
+                className="text-white/52 transition-colors hover:text-white/80"
+              >
+                <Phone className="h-4 w-4" />
+              </a>
+              <a
+                href="mailto:hidrokopdoo@gmail.com"
+                aria-label="Pošaljite email"
+                className="text-white/52 transition-colors hover:text-white/80"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

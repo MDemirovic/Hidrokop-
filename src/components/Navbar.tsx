@@ -21,7 +21,8 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Početna', href: '#pocetna' },
     { name: 'Usluge', href: '#usluge' },
-    { name: 'Autodijelovi', href: '#autodijelovi' },
+    { name: 'Vučna služba', href: '#vucna-sluzba' },
+    { name: 'Trgovina', href: '#autodijelovi' },
     { name: 'Recenzije', href: '#recenzije' },
     { name: 'Kontakt', href: '#kontakt' },
   ];
@@ -40,12 +41,12 @@ export default function Navbar() {
             </div>
           </a>
 
-          <nav className="hidden items-center gap-9 md:flex lg:gap-10">
+          <nav className="hidden items-center gap-7 md:flex lg:gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="group relative text-[1.08rem] font-semibold tracking-[0.01em] text-zinc-300 transition-colors hover:text-white"
+                className="group relative text-[1.02rem] font-semibold tracking-[0.01em] text-zinc-300 transition-colors hover:text-white"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-red-600 transition-all duration-300 group-hover:w-full" />
@@ -72,9 +73,7 @@ export default function Navbar() {
               className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            <motion.div
-              className="fixed inset-x-0 top-0 z-[70] border-b border-zinc-800 bg-zinc-950/98 pt-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:hidden"
-            >
+            <motion.div className="fixed inset-x-0 top-0 z-[70] border-b border-zinc-800 bg-zinc-950/98 pt-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:hidden">
               <div className="container mx-auto flex min-h-[100dvh] flex-col px-6 pb-8">
                 <div className="mb-6 flex items-center justify-between border-b border-zinc-800/70 pb-5">
                   <a href="#pocetna" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>

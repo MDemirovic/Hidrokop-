@@ -7,13 +7,13 @@ import { useLayoutEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import TowingService from './components/TowingService';
 import AutoParts from './components/AutoParts';
 import About from './components/About';
 import Location from './components/Location';
 import Reviews from './components/Reviews';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
 import StickyCTA from './components/StickyCTA';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -92,6 +92,7 @@ export default function App() {
       <main>
         <Hero />
         <Services />
+        <TowingService />
         <AutoParts />
         <Reviews />
         <About />
@@ -99,7 +100,6 @@ export default function App() {
         <Gallery />
         <Contact />
       </main>
-      <Footer />
       <StickyCTA />
     </div>
   );
