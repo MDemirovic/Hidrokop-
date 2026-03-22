@@ -13,7 +13,7 @@ export default function AutoParts() {
         <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent via-zinc-950/55 to-zinc-950" />
       </div>
 
-      <div className="relative mx-auto max-w-[1320px] px-6 lg:pr-[50vw] xl:pr-[48vw]">
+      <div className="relative mx-auto max-w-[1320px] px-6 lg:pr-[54vw] xl:pr-[48vw]">
         <div data-gsap="reveal" data-y="20" className="mb-10 flex max-w-[560px] flex-col gap-1 md:mb-14">
           <h2 className="font-serif text-5xl font-semibold leading-[0.92] tracking-[0.03em] text-zinc-100 sm:text-6xl md:text-7xl lg:text-8xl">
             Trgovina
@@ -24,7 +24,7 @@ export default function AutoParts() {
         </div>
 
         <div className="grid gap-8">
-          <div data-gsap="reveal" data-x="-30" className="relative z-20 max-w-[520px] lg:max-w-[430px] xl:max-w-[490px]">
+          <div data-gsap="reveal" data-x="-30" className="relative z-20 max-w-[520px] lg:max-w-[400px] xl:max-w-[490px]">
             <p className="text-base leading-relaxed text-zinc-200 md:text-lg">
               Originalni i zamjenski dijelovi za sva vozila, uz brz savjet i sigurnu nabavu bez nepotrebnog čekanja.
             </p>
@@ -62,7 +62,7 @@ export default function AutoParts() {
       <div
         data-gsap="reveal"
         data-x="60"
-        className="pointer-events-none absolute bottom-[-2.5rem] right-0 hidden w-[68vw] max-w-[1160px] lg:block xl:bottom-[-4rem]"
+        className="pointer-events-none absolute bottom-[-2.5rem] right-[-2vw] hidden w-[66vw] max-w-[1120px] lg:block xl:bottom-[-4rem]"
       >
         <img
           src={asset('auto3.png')}

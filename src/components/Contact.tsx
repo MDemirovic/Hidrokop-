@@ -10,15 +10,11 @@ export default function Contact() {
   const termsUrl = `${import.meta.env.BASE_URL}uslovi-koristenja.html`;
 
   return (
-    <section id="kontakt" className="relative overflow-hidden bg-[#120708] py-24 text-white md:py-32">
+    <section id="kontakt" className="relative -mt-px overflow-hidden bg-[#120708] py-24 text-white md:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#000000_0%,#1a0709_7%,#451116_14%,#742028_28%,#92272d_46%,#92252c_66%,#721b22_84%,#20090c_97%,#09090b_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,#000000_0%,rgba(0,0,0,0.96)_18%,rgba(0,0,0,0.82)_36%,rgba(7,4,5,0.56)_58%,rgba(18,7,8,0.22)_82%,rgba(18,7,8,0)_100%)]" />
-        <div className="absolute inset-x-[10%] top-[14%] h-40 bg-[linear-gradient(90deg,rgba(127,29,29,0),rgba(239,68,68,0.14),rgba(127,29,29,0))] blur-3xl" />
-        <div className="absolute left-[-8rem] top-[16%] h-[24rem] w-[24rem] rounded-full bg-red-950/18 blur-3xl" />
-        <div className="absolute right-[-10rem] top-[13%] h-[26rem] w-[26rem] rounded-full bg-red-900/16 blur-3xl" />
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-[linear-gradient(180deg,rgba(58,16,20,0)_0%,rgba(58,16,20,0.2)_22%,rgba(50,13,17,0.55)_52%,rgba(42,10,13,0.86)_82%,#2a0a0d_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_22%,transparent_78%,rgba(0,0,0,0.2))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#000000_0%,#000000_3%,#120406_6%,#3a0d12_11%,#661922_20%,#84212a_32%,#92272d_54%,#92252c_78%,#721b22_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(120%_72%_at_50%_100%,rgba(239,68,68,0.12),transparent_58%),radial-gradient(95%_44%_at_50%_26%,rgba(248,113,113,0.06),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_16%,transparent_84%,rgba(0,0,0,0.08))]" />
       </div>
 
       <div className="container relative mx-auto px-6">
