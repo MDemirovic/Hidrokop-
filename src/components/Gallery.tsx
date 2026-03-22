@@ -3,12 +3,12 @@ import { asset } from '../utils/asset';
 import SectionHeading from './SectionHeading';
 
 const images = [
-  { src: asset('1.jpg'), alt: 'Galerija slika 1' },
-  { src: asset('2.jpg'), alt: 'Galerija slika 2' },
-  { src: asset('3.jpg'), alt: 'Galerija slika 3' },
-  { src: asset('4.jpg'), alt: 'Galerija slika 4' },
-  { src: asset('5.jfif'), alt: 'Galerija slika 5' },
-  { src: asset('6.jpeg'), alt: 'Galerija slika 6' },
+  { src: asset('1.jpg'), alt: 'Galerija slika 1', width: 1280, height: 720 },
+  { src: asset('2.jpg'), alt: 'Galerija slika 2', width: 1280, height: 720 },
+  { src: asset('3.jpg'), alt: 'Galerija slika 3', width: 612, height: 408 },
+  { src: asset('4.jpg'), alt: 'Galerija slika 4', width: 958, height: 711 },
+  { src: asset('5.jfif'), alt: 'Galerija slika 5', width: 612, height: 408 },
+  { src: asset('6.jpeg'), alt: 'Galerija slika 6', width: 2560, height: 1707 },
 ];
 
 export default function Gallery() {
@@ -48,7 +48,7 @@ export default function Gallery() {
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-            {images.map(({ src, alt }, index) => (
+            {images.map(({ src, alt, width, height }, index) => (
               <button
                 type="button"
                 key={src}
@@ -66,6 +66,11 @@ export default function Gallery() {
                   <img
                     src={src}
                     alt={alt}
+                    width={width}
+                    height={height}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(min-width: 768px) 33vw, 50vw"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
@@ -88,6 +93,8 @@ export default function Gallery() {
           <img
             src={activeImage}
             alt="Povećana slika galerije"
+            loading="eager"
+            decoding="async"
             className="relative z-10 max-h-[88vh] w-auto max-w-[min(100%,1200px)] rounded-2xl object-contain shadow-[0_35px_90px_rgba(0,0,0,0.7)]"
             onClick={(event) => event.stopPropagation()}
             referrerPolicy="no-referrer"

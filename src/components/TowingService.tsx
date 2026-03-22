@@ -47,7 +47,15 @@ export default function TowingService() {
 
         <div data-gsap="reveal" data-y="18" className="relative mx-auto w-full max-w-[250px] lg:max-w-[290px]">
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(220,38,38,0.1),rgba(24,24,27,0))] blur-2xl" />
-          <img src={asset('vucna.png')} alt="Vučna služba" className="relative mx-auto h-auto w-full object-contain" />
+          <img
+            src={asset('vucna.png')}
+            alt="Vučna služba"
+            width="1024"
+            height="1536"
+            loading="lazy"
+            decoding="async"
+            className="relative mx-auto h-auto w-full object-contain"
+          />
         </div>
 
         <div data-gsap="reveal" data-x="24" className="grid gap-4">

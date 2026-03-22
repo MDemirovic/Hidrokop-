@@ -50,6 +50,10 @@ export default function AutoParts() {
                   <img
                     src={asset('auto3.png')}
                     alt="Auto dijelovi"
+                    width="1536"
+                    height="1024"
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-x-[-4%] bottom-0 h-full w-[108%] max-w-none object-contain object-center drop-shadow-[0_24px_55px_rgba(0,0,0,0.6)] sm:inset-x-[-6%] sm:w-[112%]"
                   />
                 </picture>
@@ -67,6 +71,10 @@ export default function AutoParts() {
         <img
           src={asset('auto3.png')}
           alt="Auto dijelovi"
+          width="1536"
+          height="1024"
+          loading="lazy"
+          decoding="async"
           className="h-auto w-full object-contain object-right drop-shadow-[0_34px_80px_rgba(0,0,0,0.68)]"
         />
       </div>

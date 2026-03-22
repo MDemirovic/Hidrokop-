@@ -14,12 +14,12 @@ import {
 import { asset } from '../utils/asset';
 
 const services = [
-  { icon: ShoppingBag, title: 'Trgovina', image: asset('trgovina1.png') },
-  { icon: Wrench, title: 'Autoservis', image: asset('autoservis.jpg') },
-  { icon: Truck, title: 'Vučna služba', image: asset('4.jpg') },
-  { icon: Search, title: 'Optika trapa', image: asset('HPUlaz.png') },
-  { icon: Circle, title: 'Vulkanizerske usluge', image: asset('1.jpg') },
-  { icon: Wind, title: 'Punjenje i održavanje klime', image: asset('3.jpg') },
+  { icon: ShoppingBag, title: 'Trgovina', image: asset('trgovina1.png'), width: 1024, height: 1536 },
+  { icon: Wrench, title: 'Autoservis', image: asset('autoservis.jpg'), width: 960, height: 720 },
+  { icon: Truck, title: 'Vučna služba', image: asset('4.jpg'), width: 958, height: 711 },
+  { icon: Search, title: 'Optika trapa', image: asset('HPUlaz.png'), width: 876, height: 584 },
+  { icon: Circle, title: 'Vulkanizerske usluge', image: asset('1.jpg'), width: 1280, height: 720 },
+  { icon: Wind, title: 'Punjenje i održavanje klime', image: asset('3.jpg'), width: 612, height: 408 },
 ];
 
 export default function Services() {
@@ -223,6 +223,11 @@ export default function Services() {
                 <img
                   src={service.image}
                   alt={service.title}
+                  width={service.width}
+                  height={service.height}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 768px) 380px, 85vw"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 

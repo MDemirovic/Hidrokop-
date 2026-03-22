@@ -1,8 +1,11 @@
-﻿import { MapPin } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { MapPin } from 'lucide-react';
 
 import SectionHeading from './SectionHeading';
 
 export default function Location() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const mapUrl =
     'https://maps.google.com/maps?q=Hidrokop+-+HP+Auto,+Rijeka&t=&z=15&ie=UTF8&iwloc=&output=embed';
 
@@ -12,8 +15,26 @@ export default function Location() {
     { day: 'Nedjelja', hours: 'Zatvoreno' },
   ];
 
+  useEffect(() => {
+    if (!sectionRef.current || shouldLoadMap) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px 0px' }
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [shouldLoadMap]);
+
   return (
     <section
+      ref={sectionRef}
       id="lokacija"
       className="relative -mt-2 overflow-hidden bg-zinc-950 pb-14 pt-8 md:mt-0 md:py-28"
     >
@@ -37,9 +58,7 @@ export default function Location() {
 
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950/70 shadow-[0_25px_85px_-35px_rgba(0,0,0,0.95)] backdrop-blur-sm">
           <div className="grid lg:grid-cols-[420px_1fr]">
-            <div
-              className="relative z-10 border-b border-white/10 bg-zinc-950/85 p-8 lg:border-b-0 lg:border-r lg:p-12"
-            >
+            <div className="relative z-10 border-b border-white/10 bg-zinc-950/85 p-8 lg:border-b-0 lg:border-r lg:p-12">
               <div aria-hidden className="absolute -right-10 top-12 hidden h-36 w-36 rounded-full bg-red-600/15 blur-2xl lg:block" />
 
               <div data-gsap="reveal" data-y="20" data-start="top 82%" className="relative mb-8 flex items-start gap-4">
@@ -56,7 +75,13 @@ export default function Location() {
                 </div>
               </div>
 
-              <div data-gsap="reveal" data-y="20" data-delay="0.04" data-start="top 82%" className="rounded-2xl border border-white/10 bg-black/30 p-5">
+              <div
+                data-gsap="reveal"
+                data-y="20"
+                data-delay="0.04"
+                data-start="top 82%"
+                className="rounded-2xl border border-white/10 bg-black/30 p-5"
+              >
                 <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-zinc-300">Radno vrijeme</h4>
                 <ul className="space-y-3">
                   {openingHours.map((item) => (
@@ -84,25 +109,27 @@ export default function Location() {
               </a>
             </div>
 
-            <div
-              className="relative min-h-[420px] overflow-hidden bg-zinc-900"
-            >
-              <iframe
-                data-gsap="reveal"
-                data-y="20"
-                data-delay="0.08"
-                data-scale="0.985"
-                data-start="top 82%"
-                src={mapUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0, minHeight: '400px' }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 h-full w-full"
-                title="Google Maps Lokacija"
-              />
+            <div className="relative min-h-[420px] overflow-hidden bg-zinc-900">
+              {shouldLoadMap ? (
+                <iframe
+                  data-gsap="reveal"
+                  data-y="20"
+                  data-delay="0.08"
+                  data-scale="0.985"
+                  data-start="top 82%"
+                  src={mapUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, minHeight: '400px' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 h-full w-full"
+                  title="Google Maps Lokacija"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(185,28,28,0.14),rgba(9,9,11,0.95)_66%)]" />
+              )}
             </div>
           </div>
         </div>

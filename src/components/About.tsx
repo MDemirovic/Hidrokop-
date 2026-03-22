@@ -49,6 +49,10 @@ export default function About() {
               <img
                 src={asset('HPUlaz.png')}
                 alt="Hidrokop-HP Auto Ulaz"
+                width="876"
+                height="584"
+                loading="lazy"
+                decoding="async"
                 className="h-[500px] w-full object-cover object-[20%_center]"
                 referrerPolicy="no-referrer"
               />

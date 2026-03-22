@@ -36,6 +36,9 @@ export default function Navbar() {
               <img
                 src={asset('logo.png')}
                 alt="Hidrokop-HP Auto Logo"
+                width="478"
+                height="478"
+                decoding="async"
                 className="h-16 w-auto max-w-none drop-shadow-2xl md:h-24"
               />
             </div>
@@ -81,6 +84,9 @@ export default function Navbar() {
                       <img
                         src={asset('logo.png')}
                         alt="Hidrokop-HP Auto Logo"
+                        width="478"
+                        height="478"
+                        decoding="async"
                         className="h-16 w-auto max-w-none drop-shadow-2xl"
                       />
                     </div>

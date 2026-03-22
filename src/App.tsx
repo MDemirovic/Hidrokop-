@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -15,74 +15,107 @@ import Reviews from './components/Reviews';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import StickyCTA from './components/StickyCTA';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 export default function App() {
   const pageRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!pageRef.current) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-    const refreshScrollTriggers = () => ScrollTrigger.refresh();
+    let cancelled = false;
+    let cleanup = () => {};
 
-    const ctx = gsap.context(() => {
-      const revealItems = gsap.utils.toArray<HTMLElement>('[data-gsap="reveal"]');
+    const scheduleAnimationSetup = (callback: () => void) => {
+      const run = () => {
+        const idleWindow = window as Window & {
+          requestIdleCallback?: (cb: () => void, options?: { timeout: number }) => number;
+        };
 
-      revealItems.forEach((item) => {
-        const x = Number(item.dataset.x ?? 0);
-        const y = Number(item.dataset.y ?? 24);
-        const start = item.dataset.start ?? 'top 85%';
-        const delay = Number(item.dataset.delay ?? 0);
-        const scale = Number(item.dataset.scale ?? 1);
+        if (idleWindow.requestIdleCallback) {
+          idleWindow.requestIdleCallback(callback, { timeout: 800 });
+          return;
+        }
 
-        gsap.fromTo(
-          item,
-          { autoAlpha: 0, x, y, scale },
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            scale: 1,
-            duration: 0.85,
-            ease: 'power3.out',
-            delay,
-            scrollTrigger: {
-              trigger: item,
-              start,
-              once: true,
-            },
+        window.setTimeout(callback, 180);
+      };
+
+      window.requestAnimationFrame(run);
+    };
+
+    scheduleAnimationSetup(() => {
+      void (async () => {
+        const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger'),
+        ]);
+
+        if (cancelled || !pageRef.current) return;
+
+        gsap.registerPlugin(ScrollTrigger);
+        const refreshScrollTriggers = () => ScrollTrigger.refresh();
+
+        const ctx = gsap.context(() => {
+          const revealItems = gsap.utils.toArray<HTMLElement>('[data-gsap="reveal"]');
+
+          revealItems.forEach((item) => {
+            const x = Number(item.dataset.x ?? 0);
+            const y = Number(item.dataset.y ?? 24);
+            const start = item.dataset.start ?? 'top 85%';
+            const delay = Number(item.dataset.delay ?? 0);
+            const scale = Number(item.dataset.scale ?? 1);
+
+            gsap.fromTo(
+              item,
+              { autoAlpha: 0, x, y, scale },
+              {
+                autoAlpha: 1,
+                x: 0,
+                y: 0,
+                scale: 1,
+                duration: 0.85,
+                ease: 'power3.out',
+                delay,
+                scrollTrigger: {
+                  trigger: item,
+                  start,
+                  once: true,
+                },
+              }
+            );
+          });
+
+          const loadItems = gsap.utils.toArray<HTMLElement>('[data-gsap="load"]');
+          if (loadItems.length) {
+            gsap.fromTo(
+              loadItems,
+              { autoAlpha: 0, y: 24 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.85,
+                ease: 'power3.out',
+                stagger: 0.12,
+                delay: 0.08,
+              }
+            );
           }
-        );
-      });
+        }, pageRef);
 
-      const loadItems = gsap.utils.toArray<HTMLElement>('[data-gsap="load"]');
-      if (loadItems.length) {
-        gsap.fromTo(
-          loadItems,
-          { autoAlpha: 0, y: 24 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            stagger: 0.12,
-            delay: 0.08,
-          }
-        );
-      }
-    }, pageRef);
+        const refreshTimeout = window.setTimeout(refreshScrollTriggers, 250);
+        window.addEventListener('load', refreshScrollTriggers);
 
-    const refreshTimeout = window.setTimeout(refreshScrollTriggers, 250);
-    window.addEventListener('load', refreshScrollTriggers);
+        void document.fonts?.ready.then(refreshScrollTriggers).catch(() => {});
 
-    void document.fonts?.ready.then(refreshScrollTriggers).catch(() => {});
+        cleanup = () => {
+          window.clearTimeout(refreshTimeout);
+          window.removeEventListener('load', refreshScrollTriggers);
+          ctx.revert();
+        };
+      })();
+    });
 
     return () => {
-      window.clearTimeout(refreshTimeout);
-      window.removeEventListener('load', refreshScrollTriggers);
-      ctx.revert();
+      cancelled = true;
+      cleanup();
     };
   }, []);
 

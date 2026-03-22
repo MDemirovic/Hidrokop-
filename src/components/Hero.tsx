@@ -10,6 +10,11 @@ export default function Hero() {
         <img
           src={asset('bg.png')}
           alt="Auto Servis"
+          width="1536"
+          height="1024"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
           className="absolute top-0 right-0 h-full w-[115%] max-w-none object-cover object-[70%_center] md:w-[106%] md:object-center"
         />
         <div className="absolute inset-0 w-full bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent md:w-3/4" />
