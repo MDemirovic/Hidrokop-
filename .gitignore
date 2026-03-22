@@ -6,3 +6,5 @@ coverage/
 *.log
 .env*
 !.env.example
+ideje.docx
+pitanja za daljnji dogovor.md

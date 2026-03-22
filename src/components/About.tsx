@@ -29,8 +29,8 @@ export default function About() {
                 i brzu uslugu. Znamo koliko je frustrirajuće kada auto stane, zato smo tu da taj stres svedemo na minimum.
               </p>
               <p>
-                Naš pristup je jednostavan: nema skrivenih troškova, nema nepotrebnih popravki. Fokusirani smo na kvalitet
-                i povjerenje, jer želimo da nam se vratite i da nas preporučite prijateljima.
+                Naš pristup je jednostavan: nema skrivenih troškova, nema nepotrebnih popravki. Fokusirani smo na kvalitetu
+                i povjerenje.
               </p>
             </div>
 

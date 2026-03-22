@@ -36,12 +36,14 @@ export default function Location() {
     <section
       ref={sectionRef}
       id="lokacija"
-      className="relative -mt-2 overflow-hidden bg-zinc-950 pb-14 pt-8 md:mt-0 md:py-28"
+      className="relative -mt-2 overflow-x-clip overflow-y-hidden bg-zinc-950 pb-0 pt-8 md:mt-0 md:pt-28 md:pb-14 lg:pb-28"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[56%] h-[34rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/14 blur-[150px]" />
+        <div className="absolute left-1/2 top-[56%] h-[34rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/14 blur-[150px] md:hidden" />
+        <div className="absolute left-1/2 top-[46%] hidden h-[28rem] w-[44rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/8 blur-[140px] md:block" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-18" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_58%,rgba(120,20,30,0.18),rgba(9,9,11,0.96)_45%,#09090b_72%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_58%,rgba(120,20,30,0.18),rgba(9,9,11,0.96)_45%,#09090b_72%)] md:hidden" />
+        <div className="absolute inset-0 hidden bg-[radial-gradient(circle_at_50%_48%,rgba(120,20,30,0.1),rgba(9,9,11,0.97)_42%,#09090b_68%)] md:block" />
       </div>
 
       <div className="container relative mx-auto px-6">
@@ -53,12 +55,13 @@ export default function Location() {
             inline
             className="max-w-[760px]"
             titleClassName="md:max-w-none"
+            subtitleClassName="block text-zinc-100 sm:inline"
           />
         </div>
 
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950/70 shadow-[0_25px_85px_-35px_rgba(0,0,0,0.95)] backdrop-blur-sm">
-          <div className="grid lg:grid-cols-[420px_1fr]">
-            <div className="relative z-10 border-b border-white/10 bg-zinc-950/85 p-8 lg:border-b-0 lg:border-r lg:p-12">
+        <div className="relative w-full max-w-full overflow-hidden rounded-t-[2rem] border border-white/10 border-b-0 bg-zinc-950/70 shadow-[0_25px_85px_-35px_rgba(0,0,0,0.95)] backdrop-blur-sm lg:rounded-[2rem] lg:border-b">
+          <div className="grid min-w-0 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
+            <div className="relative z-10 min-w-0 border-b border-white/10 bg-zinc-950/85 p-8 lg:border-b-0 lg:border-r lg:p-12">
               <div aria-hidden className="absolute -right-10 top-12 hidden h-36 w-36 rounded-full bg-red-600/15 blur-2xl lg:block" />
 
               <div data-gsap="reveal" data-y="20" data-start="top 82%" className="relative mb-8 flex items-start gap-4">
@@ -85,9 +88,13 @@ export default function Location() {
                 <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-zinc-300">Radno vrijeme</h4>
                 <ul className="space-y-3">
                   {openingHours.map((item) => (
-                    <li key={item.day} className="flex items-center justify-between gap-3 text-sm">
+                    <li key={item.day} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 text-sm">
                       <span className="text-zinc-400">{item.day}</span>
-                      <span className={`font-semibold ${item.hours === 'Zatvoreno' ? 'text-zinc-500' : 'text-zinc-100'}`}>
+                      <span
+                        className={`text-right font-semibold ${
+                          item.hours === 'Zatvoreno' ? 'text-zinc-500' : 'text-zinc-100'
+                        }`}
+                      >
                         {item.hours}
                       </span>
                     </li>
@@ -109,7 +116,7 @@ export default function Location() {
               </a>
             </div>
 
-            <div className="relative min-h-[420px] overflow-hidden bg-zinc-900">
+            <div className="relative h-[320px] min-w-0 overflow-hidden bg-transparent lg:h-auto lg:min-h-[420px] lg:bg-zinc-900">
               {shouldLoadMap ? (
                 <iframe
                   data-gsap="reveal"
@@ -120,11 +127,12 @@ export default function Location() {
                   src={mapUrl}
                   width="100%"
                   height="100%"
-                  style={{ border: 0, minHeight: '400px' }}
+                  style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="absolute inset-0 h-full w-full"
+                  className="absolute inset-0 block h-full w-full lg:min-h-[400px]"
+                  scrolling="no"
                   title="Google Maps Lokacija"
                 />
               ) : (

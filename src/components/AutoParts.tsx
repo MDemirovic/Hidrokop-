@@ -6,9 +6,11 @@ export default function AutoParts() {
   return (
     <section id="autodijelovi" className="relative isolate overflow-hidden bg-zinc-950 pb-8 pt-24 md:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_84%_30%,rgba(185,28,28,0.28),rgba(9,9,11,0.97)_58%,#09090b_86%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(82%_64%_at_50%_62%,rgba(185,28,28,0.22),rgba(9,9,11,0.96)_52%,#09090b_82%)] lg:hidden" />
+        <div className="absolute inset-0 hidden bg-[radial-gradient(120%_100%_at_84%_30%,rgba(185,28,28,0.28),rgba(9,9,11,0.97)_58%,#09090b_86%)] lg:block" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:42px_42px] opacity-20" />
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-zinc-950 via-zinc-950/95 to-transparent md:h-52" />
+        <div className="absolute inset-x-0 bottom-[-5rem] h-[12rem] bg-[radial-gradient(46%_100%_at_50%_0%,rgba(127,29,29,0.14),rgba(127,29,29,0.05)_36%,rgba(9,9,11,0)_80%)] blur-2xl" />
         <div className="absolute inset-x-0 bottom-[-10rem] h-[24rem] bg-[radial-gradient(70%_100%_at_50%_0%,rgba(127,29,29,0.26),rgba(127,29,29,0.12)_38%,rgba(9,9,11,0)_78%)] blur-2xl" />
         <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent via-zinc-950/55 to-zinc-950" />
       </div>

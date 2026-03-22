@@ -140,8 +140,6 @@ export default function Services() {
     <section id="usluge" className="relative overflow-hidden bg-zinc-950 pb-24 pt-14 md:py-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-[12%] top-[18%] h-[16rem] bg-[linear-gradient(90deg,rgba(127,29,29,0),rgba(127,29,29,0.12),rgba(127,29,29,0))] blur-3xl" />
-        <div className="absolute bottom-[-9rem] right-[-8rem] h-[22rem] w-[30rem] rounded-full bg-red-900/12 blur-3xl" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-zinc-950/70 to-zinc-950" />
       </div>
       <div className="container mx-auto px-6">
         <div className="mx-auto mb-10 max-w-3xl md:mb-14">
