@@ -28,6 +28,7 @@ export default function Services() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDesktopView, setIsDesktopView] = useState(false);
 
   const getCards = () => {
     if (!scrollRef.current) return [] as HTMLElement[];
@@ -57,11 +58,15 @@ export default function Services() {
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
-    setActiveIndex(getCenteredIndex());
     const maxLeft = Math.max(0, scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
     const epsilon = 2;
     setCanScrollLeft(scrollRef.current.scrollLeft > epsilon);
     setCanScrollRight(scrollRef.current.scrollLeft < maxLeft - epsilon);
+
+    if (!isDesktopView) {
+      const centeredIndex = getCenteredIndex();
+      setActiveIndex(centeredIndex);
+    }
   };
 
   useEffect(() => {
@@ -69,11 +74,19 @@ export default function Services() {
     if (!el) return;
 
     const refresh = () => {
+      const desktop = window.matchMedia('(min-width: 768px)').matches;
       const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
       const epsilon = 2;
+      setIsDesktopView(desktop);
       setCanScrollLeft(el.scrollLeft > epsilon);
       setCanScrollRight(el.scrollLeft < maxLeft - epsilon);
-      setActiveIndex(getCenteredIndex());
+
+      if (!desktop) {
+        const centeredIndex = getCenteredIndex();
+        setActiveIndex(centeredIndex);
+      } else if (el.scrollLeft <= epsilon) {
+        setActiveIndex(0);
+      }
     };
 
     refresh();
@@ -82,7 +95,7 @@ export default function Services() {
   }, []);
 
   const getCurrentIndex = () => {
-    return getCenteredIndex();
+    return isDesktopView ? activeIndex : getCenteredIndex();
   };
 
   const goToIndex = (index: number, withAnimation = false) => {
@@ -177,11 +190,12 @@ export default function Services() {
           </button>
         </div>
 
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden pb-4 md:overflow-x-hidden md:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
+        <div className="relative">
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden pb-4 md:overflow-x-hidden md:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          >
           {services.map((service, index) => {
             const Icon = service.icon;
 
@@ -255,6 +269,16 @@ export default function Services() {
               </div>
             );
           })}
+          </div>
+
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 hidden w-28 bg-[linear-gradient(90deg,rgba(9,9,11,0)_0%,rgba(9,9,11,0.18)_28%,rgba(9,9,11,0.58)_68%,#09090b_100%)] md:block"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-10 right-0 hidden w-px bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_24%,rgba(255,255,255,0.16)_50%,rgba(255,255,255,0)_100%)] md:block"
+          />
         </div>
 
         <div className="mt-6 flex justify-center gap-2">
